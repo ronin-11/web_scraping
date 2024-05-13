@@ -7,7 +7,7 @@ def load_data():
     return df
 
 def main():
-    st.markdown("Welcome to News Explorer")
+    st.markdown("Welcome to News Explorer by R204434C")
 
     st.subheader("Explore News Clusters")
 
