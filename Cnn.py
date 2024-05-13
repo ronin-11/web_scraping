@@ -4,10 +4,7 @@ import csv
 
 def fetch_page(url):
     response = requests.get(url)
-    if response.status_code == 200:
-        return response.text
-    else:
-        return None
+    return response.text if response.status_code == 200 else None
 
 def parse_homepage(url):
     html_content = fetch_page(url)
@@ -15,7 +12,8 @@ def parse_homepage(url):
         soup = BeautifulSoup(html_content, 'html.parser')
         all_news = soup.select("div.container_list-headlines__field-wrapper a")
         for news in all_news:
-            title = news.find('span', class_='container__headline-text').get_text(strip=True) if news.find('span', class_='container__headline-text') else None
+            title_element = news.find('span', class_='container__headline-text')
+            title = title_element.get_text(strip=True) if title_element else None
             relative_link = news.get('href')
             if relative_link:
                 full_link = requests.compat.urljoin(url, relative_link)
@@ -34,12 +32,11 @@ def main():
 
     with open('cnn_business.csv', 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
-        writer.writerow(['Category', 'Content', 'Link', 'Source', 'Title'])  # Writing the headers of CSV in the new order
+        writer.writerow(['Category', 'Title', 'Content', 'Link', 'Source'])  # Changed the order of CSV headers
 
         for news_item in parse_homepage(url):
             article_content = parse_article(news_item['link'])
-            # Adjust the order of data here to match the new header
-            writer.writerow([category, article_content, news_item['link'], 'CNN', news_item['title']])
+            writer.writerow([category, news_item['title'], article_content, news_item['link'], 'CNN'])
 
 if __name__ == "__main__":
     main()
