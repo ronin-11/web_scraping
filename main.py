@@ -1,9 +1,8 @@
 import streamlit as st
 import pandas as pd
-import random
 
 def load_data():
-    df = pd.read_csv('fetched.csv')
+    df = pd.read_csv('data.csv')
     return df
 
 def main():
@@ -13,8 +12,7 @@ def main():
 
     data = load_data()
 
-    clusters = data['Cluster'].unique()
-    random.shuffle(clusters)  # Shuffle the clusters
+    clusters = sorted(data['Cluster'].unique())  # Sort the clusters from 0 to 3
 
     chosen_cluster = st.sidebar.radio("Choose a Cluster", clusters)
 
