@@ -6,24 +6,26 @@ def load_data():
     return df
 
 def main():
-    st.markdown("Welcome to News Explorer by R204434C")
+    st.markdown("<h3 style='background-color: #0074D9; padding: 10px; border-radius: 5px; color: white;'>Welcome to News Explorer by R204434C</h3>", unsafe_allow_html=True)
 
-    st.subheader("Explore News Clusters")
+    st.sidebar.subheader("Explore News Clusters")
 
     data = load_data()
 
     clusters = sorted(data['Cluster'].unique())  # Sort the clusters from 0 to 3
 
-    chosen_cluster = st.sidebar.radio("Choose a Cluster", clusters)
+    chosen_cluster = st.sidebar.radio("Choose a Cluster", [f"Cluster {cluster}" for cluster in clusters])
 
-    st.success(f"Chosen Cluster: {chosen_cluster}")
+    cluster_number = int(chosen_cluster.split()[1])  # Extract cluster number from the chosen_cluster string
 
-    cluster_articles = data[data['Cluster'] == chosen_cluster]
+    st.sidebar.success(f"**Chosen Cluster:** {chosen_cluster}")
+
+    cluster_articles = data[data['Cluster'] == cluster_number]
+
+    st.subheader(f"**News Articles in {chosen_cluster}**")
 
     for idx, row in cluster_articles.iterrows():
-        st.markdown(f"**Title:** {row['Title']}")
-        st.markdown(f"**Category:** {row['Category']}")
-        st.markdown(f"**Source:** {row['Source']}")
+        st.markdown(f"**Title:** {row['Title']} - **Category:** {row['Category']} - **Source:** {row['Source']}")
         st.markdown(f"**URL:** {row['Link']}")
         st.write(" ")
 
