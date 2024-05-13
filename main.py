@@ -18,7 +18,7 @@ def main():
 
     chosen_cluster = st.sidebar.radio("Choose a Cluster", clusters)
 
-    st.success(f"Selected Cluster: {chosen_cluster}")
+    st.success(f"Chosen Cluster: {chosen_cluster}")
 
     cluster_articles = data[data['Cluster'] == chosen_cluster]
 
